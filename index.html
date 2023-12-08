@@ -26,8 +26,8 @@
     const guessReveal = document.getElementById("guessReveal");
     const message = document.querySelector(".message");
     const answerMessage = document.querySelector(".answerMessage");
-    
-    let totalGuess = 1;
+    let totalGuessCount = 1;
+    let submitClickCount = 1;
     let maxNum = 100;
     let minNum = 1;
     // Event listener
@@ -38,35 +38,40 @@
     function checkGuess() {
       const userGuess = parseInt(guessField.value);
       console.log("userGuess: " + userGuess);
-
-      if (userGuess === targetNumber) {
-        message.textContent = `恭喜你，你猜對了！你這次猜了${totalGuess}次哦～`;
-        message.style.color = "green";
-        guessSubmit.disabled = true;
-      } else if (userGuess < targetNumber) {
-        message.textContent = `太小了，再試一次。你這次猜了${totalGuess}次哦～`;
-        updateGuessRange.textContent = `${userGuess} 到 ${maxNum} 之間的數字，你猜是多少？`;
-        message.style.color = "red";
-        if (userGuess > minNum){
-        minNum = userGuess;
-        }
-        totalGuess += 1;
-      } else {
-        message.textContent = `太大了，再試一次。你這次猜了${totalGuess}次哦～`;
-        updateGuessRange.textContent = `${minNum} 到 ${userGuess}  之間的數字，你猜是多少？`;
-        message.style.color = "red";
-        if (userGuess < maxNum){
-          maxNum = userGuess;
-        }
-        totalGuess += 1;
-      }
-
-      guessField.value = "";
-      guessField.focus();
+          if (userGuess === targetNumber && submitClickCount < 5) {
+            message.textContent = `恭喜你，你猜對了！你這次猜了${totalGuessCount}次哦～`;
+            message.style.color = "green";
+            guessSubmit.disabled = true;
+          } else if (userGuess < targetNumber && submitClickCount < 5) {
+            message.textContent = `太小了，再試一次。你這次猜了${totalGuessCount}次哦～`;
+            updateGuessRange.textContent = `${userGuess} 到 ${maxNum} 之間的數字，你猜是多少？`;
+            message.style.color = "red";
+            if (userGuess > minNum){
+            minNum = userGuess;
+            }
+            totalGuessCount += 1;
+            submitClickCount++;
+          } else if (userGuess > targetNumber && submitClickCount < 5){
+            message.textContent = `太大了，再試一次。你這次猜了${totalGuessCount}次哦～`;
+            updateGuessRange.textContent = `${minNum} 到 ${userGuess}  之間的數字，你猜是多少？`;
+            message.style.color = "red";
+            if (userGuess < maxNum){
+              maxNum = userGuess;
+            }
+            totalGuessCount++;
+            submitClickCount++;
+          } else {
+            message.textContent = `You Failed! 答案是${targetNumber}`;
+            message.style.color = "red";
+            guessSubmit.disabled = true;
+          }
+        guessField.value = "";
+        guessField.focus();
     }
 
+    // Reveal answer function
     function revealAnswer() {
-      answerMessage.textContent = `沒耐心的傢伙，答案是${targetNumber}啦!!!`;
+      answerMessage.textContent = `沒耐心的傢伙，答案是${targetNumber}啦～`;
     }
   </script>
 </html>
