@@ -10,6 +10,9 @@
     <input type="text" id="guessField" />
     <input type="submit" value="猜!" id="guessSubmit" />
     <p class="message"></p>
+    <p id="seeAnswer">猜不到想看答案啦</p>
+    <input type="button" value="看答案!" id="guessReveal" />
+    <p class="answerMessage"></p>
   </body>
   <script>
     // Random number
@@ -17,14 +20,19 @@
     console.log("answer: " + targetNumber);
 
     // Get element
+    const updateGuessRange =  document.getElementById("guessRange");
     const guessField = document.getElementById("guessField");
     const guessSubmit = document.getElementById("guessSubmit");
+    const guessReveal = document.getElementById("guessReveal");
     const message = document.querySelector(".message");
+    const answerMessage = document.querySelector(".answerMessage");
+    
     let totalGuess = 1;
     let maxNum = 100;
     let minNum = 1;
     // Event listener
     guessSubmit.addEventListener("click", checkGuess);
+    guessReveal.addEventListener("click", revealAnswer);
 
     // Guess function
     function checkGuess() {
@@ -37,20 +45,28 @@
         guessSubmit.disabled = true;
       } else if (userGuess < targetNumber) {
         message.textContent = `太小了，再試一次。你這次猜了${totalGuess}次哦～`;
-        guessRange.textContent = `${userGuess} 到 ${maxNum} 之間的數字，你猜是多少？`;
+        updateGuessRange.textContent = `${userGuess} 到 ${maxNum} 之間的數字，你猜是多少？`;
         message.style.color = "red";
+        if (userGuess > minNum){
         minNum = userGuess;
+        }
         totalGuess += 1;
       } else {
         message.textContent = `太大了，再試一次。你這次猜了${totalGuess}次哦～`;
-        guessRange.textContent = `${minNum} 到 ${userGuess}  之間的數字，你猜是多少？`;
+        updateGuessRange.textContent = `${minNum} 到 ${userGuess}  之間的數字，你猜是多少？`;
         message.style.color = "red";
-        maxNum = userGuess;
+        if (userGuess < maxNum){
+          maxNum = userGuess;
+        }
         totalGuess += 1;
       }
 
       guessField.value = "";
       guessField.focus();
+    }
+
+    function revealAnswer() {
+      answerMessage.textContent = `沒耐心的傢伙，答案是${targetNumber}啦!!!`;
     }
   </script>
 </html>
