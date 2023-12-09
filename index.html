@@ -1,112 +1,114 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
-  <head>
-    <title>猜數字遊戲</title>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <h1>猜數字遊戲</h1>
-    <p><span class="minNum">1</span> 到 <span class="maxNum">100</span> 之間的數字，你猜是多少？</p>
-    <input type="text" id="guessField" />
-    <input type="submit" value="猜!" id="guessSubmit" />
-    <input type="button" value="再玩一次" id="playAgainButton" />
-    <p class="message"></p>
-    <p class="second"></p><br>
-    <p id="seeAnswer">猜不到想看答案啦</p>
-    <input type="button" value="看答案!" id="guessRevealButton" />
-    <p class="answerMessage"></p>
-  </body>
-  <script>
-    // Random number
-    let targetNumber = Math.floor(Math.random() * 100) + 1;
-    console.log("answer: " + targetNumber);
+<head>
+	<title>猜數字遊戲</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<h1>猜數字遊戲</h1>
+	<p><span class="minNum">1</span> 到 <span class="maxNum">100</span> 之間的數字，你猜是多少？</p>
+	<form>
+		<input id="guessField" type="text"> <input id="guessSubmit" type="submit" value="猜!"> <input id="playAgainButton" type="button" value="再玩一次">
+	</form>
+	<p class="message"></p>
+	<p class="second"></p><br>
+	<p id="seeAnswer">猜不到想看答案啦</p>
+	<form>
+		<input id="guessRevealButton" type="button" value="看答案!">
+	</form>
+	<p class="answerMessage"></p>
+	<script>
+	   // Random number
+	   let targetNumber = Math.floor(Math.random() * 100) + 1;
+	   console.log("answer: " + targetNumber);
 
-    // Get element
-    const guessField = document.getElementById("guessField");
-    const guessSubmit = document.getElementById("guessSubmit");
-    const playAgain = document.getElementById("playAgainButton");
-    const guessReveal = document.getElementById("guessRevealButton");
-    const message = document.querySelector(".message");
-    const answerMessage = document.querySelector(".answerMessage");
-    const timeCountMessage = document.querySelector(".second");
-    const maxNum = document.querySelector(".maxNum");
-    const minNum = document.querySelector(".minNum");
-    let totalGuessCount = 1;
-    
-    // Event listener
-    guessSubmit.addEventListener("click", checkGuess);
-    guessReveal.addEventListener("click", revealAnswer);
-    playAgain.addEventListener("click", startNewGame);
+	   // Get element
+	   const guessField = document.getElementById("guessField");
+	   const guessSubmit = document.getElementById("guessSubmit");
+	   const playAgain = document.getElementById("playAgainButton");
+	   const guessReveal = document.getElementById("guessRevealButton");
+	   const message = document.querySelector(".message");
+	   const answerMessage = document.querySelector(".answerMessage");
+	   const timeCountMessage = document.querySelector(".second");
+	   const maxNum = document.querySelector(".maxNum");
+	   const minNum = document.querySelector(".minNum");
+	   let totalGuessCount = 1;
+	   
+	   // Event listener
+	   guessSubmit.addEventListener("click", checkGuess);
+	   guessReveal.addEventListener("click", revealAnswer);
+	   playAgain.addEventListener("click", startNewGame);
 
-    // Guess function
-    function checkGuess() {
-      const userGuess = parseInt(guessField.value);
-      const currentMaxNum = parseInt(maxNum.textContent);
-      const currentMinNum = parseInt(minNum.textContent);
-      console.log("userGuess: " + userGuess);
-          if (userGuess === targetNumber && totalGuessCount < 5) {
-            message.textContent = `恭喜你，你猜對了！你這次猜了${totalGuessCount}次哦～`;
-            message.style.color = "green";
-            guessSubmit.disabled = true;
-          } else if (userGuess < targetNumber && totalGuessCount < 5) {
-            message.textContent = `太小了，再試一次。你這次猜了${totalGuessCount}次哦～`;
-            if (userGuess > currentMinNum) {
-            minNum.textContent = userGuess;
-            }
-            message.style.color = "red";
-            totalGuessCount++;
-          } else if (userGuess > targetNumber && totalGuessCount < 5){
-            message.textContent = `太大了，再試一次。你這次猜了${totalGuessCount}次哦～`;
-            message.style.color = "red";
-            if (userGuess < currentMaxNum){
-              maxNum.textContent = userGuess;
-            }
-            totalGuessCount++;
-          } else {
-            message.textContent = `You Failed! 答案是${targetNumber}`;
-            message.style.color = "red";
-            guessSubmit.disabled = true;
-            // automatically start a new game
-            setTimeout(startNewGame, 5000);
-            delayedDisplay("自動接關倒數: 5秒", 0, display);
-            delayedDisplay("自動接關倒數: 4秒", 1000, display);
-            delayedDisplay("自動接關倒數: 3秒", 2000, display);
-            delayedDisplay("自動接關倒數: 2秒", 3000, display);
-            delayedDisplay("自動接關倒數: 1秒", 4000, display);
-          }
-        guessField.value = "";
-        guessField.focus();
-    }
+	   // Guess function
+	   function checkGuess() {
+	     const userGuess = parseInt(guessField.value);
+	     const currentMaxNum = parseInt(maxNum.textContent);
+	     const currentMinNum = parseInt(minNum.textContent);
+	     console.log("userGuess: " + userGuess);
+	         if (userGuess === targetNumber && totalGuessCount < 5) {
+	           message.textContent = `恭喜你，你猜對了！你這次猜了${totalGuessCount}次哦～`;
+	           message.style.color = "green";
+	           guessSubmit.disabled = true;
+	         } else if (userGuess < targetNumber && totalGuessCount < 5) {
+	           message.textContent = `太小了，再試一次。你這次猜了${totalGuessCount}次哦～`;
+	           if (userGuess > currentMinNum) {
+	           minNum.textContent = userGuess;
+	           }
+	           message.style.color = "red";
+	           totalGuessCount++;
+	         } else if (userGuess > targetNumber && totalGuessCount < 5){
+	           message.textContent = `太大了，再試一次。你這次猜了${totalGuessCount}次哦～`;
+	           message.style.color = "red";
+	           if (userGuess < currentMaxNum){
+	             maxNum.textContent = userGuess;
+	           }
+	           totalGuessCount++;
+	         } else {
+	           message.textContent = `You Failed! 答案是${targetNumber}`;
+	           message.style.color = "red";
+	           guessSubmit.disabled = true;
+	           // automatically start a new game
+	           setTimeout(startNewGame, 5000);
+	           delayedDisplay("自動接關倒數: 5秒", 0, display);
+	           delayedDisplay("自動接關倒數: 4秒", 1000, display);
+	           delayedDisplay("自動接關倒數: 3秒", 2000, display);
+	           delayedDisplay("自動接關倒數: 2秒", 3000, display);
+	           delayedDisplay("自動接關倒數: 1秒", 4000, display);
+	         }
+	       guessField.value = "";
+	       guessField.focus();
+	   }
 
-    // start a new game function
-    function startNewGame() {
-      const newTargetNumber = Math.floor(Math.random() * 100) + 1;
-      maxNum.textContent = 100;
-      minNum.textContent = 1;
-      targetNumber = newTargetNumber; 
-      guessSubmit.disabled = false;
-      guessReveal.disabled = false;
-      message.textContent = "";
-      answerMessage.textContent = "";
-      timeCountMessage.textContent = "";
-      totalGuessCount = 1;
-    }
+	   // start a new game function
+	   function startNewGame() {
+	     const newTargetNumber = Math.floor(Math.random() * 100) + 1;
+	     maxNum.textContent = 100;
+	     minNum.textContent = 1;
+	     targetNumber = newTargetNumber; 
+	     guessSubmit.disabled = false;
+	     guessReveal.disabled = false;
+	     message.textContent = "";
+	     answerMessage.textContent = "";
+	     timeCountMessage.textContent = "";
+	     totalGuessCount = 1;
+	   }
 
-    // Reveal answer function
-    function revealAnswer() {
-      answerMessage.textContent = `沒耐心的傢伙，答案是${targetNumber}啦～`;
-      guessReveal.disabled = true;
-    }
+	   // Reveal answer function
+	   function revealAnswer() {
+	     answerMessage.textContent = `沒耐心的傢伙，答案是${targetNumber}啦～`;
+	     guessReveal.disabled = true;
+	   }
 
-    // Game restart timer function
-    function delayedDisplay(string, ms, callback) {
-      setTimeout(function() {
-        callback(string);
-      }, ms);
-    }
-    
-    function display(time) {    
-      timeCountMessage.textContent = time;
-    }
-  </script>
+	   // Game restart timer function
+	   function delayedDisplay(string, ms, callback) {
+	     setTimeout(function() {
+	       callback(string);
+	     }, ms);
+	   }
+	   
+	   function display(time) {    
+	     timeCountMessage.textContent = time;
+	   }
+	</script> 
+</body>
 </html>
